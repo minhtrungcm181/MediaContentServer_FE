@@ -18,12 +18,12 @@ const SideBar = () => {
             Add Movie
           </li>
         </Link>
-        <Link to="genre">
+        {/* <Link to="genre">
           <li className="px-8 py-4 hover:bg-violet-600 flex items-center gap-3">
             <BsListCheck className="h-7 w-7" />
             Genre
           </li>
-        </Link>
+        </Link> */}
       </ul>
     </div>
   );

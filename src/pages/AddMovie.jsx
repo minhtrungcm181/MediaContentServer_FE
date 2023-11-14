@@ -3,6 +3,7 @@ import {
   CLOUDINARY_IMAGE_UPLOAD_URL,
   GENRE_API_URL,
   MOVIE_API_URL,
+  MOVIE_UPLOAD_API_URL,
 } from "../constants/const";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,61 +11,65 @@ import { useNavigate, useParams } from "react-router-dom";
 const AddMovie = () => {
   const CLOUD_NAME = "dm4djc1b1";
   const UPLOAD_PRESET = "eu6yplsi";
-  const [img, setImg] = useState(null);
-  const [video, setVideo] = useState(null);
-  const [rating, setRating] = useState(0);
-  const [genreList, setGenreList] = useState([]);
-  const [checkedGenre, setCheckedGenre] = useState([]);
-  const [movieName, setMovieName] = useState("");
-  const [movieId, setMovieId] = useState(0);
+  const [image, setImg] = useState(null);
+  const [videoSource, setVideo] = useState(null);
+  const [movieRating, setMovieRating] = useState(5);
+  const [movieTotalEp, setMovieTotalEp] = useState(1);
+  const [movieCurrentEp, setMovieTCurrentEp] = useState(1);
+  const [genre, setMovieGenre] = useState("hanh dong");
+  const [movieTitle, setMovieTitle] = useState("");
   const [selectImageUrl, setSelecedImageUrl] = useState("");
-  console.log(
-    "🚀 ~ file: AddMovie.jsx:61 ~ handleImage ~ selectImageUrl:",
-    selectImageUrl
-  );
+  const [movieYear, setMovieYear] = useState("2023");
+  const [movieDescription, setMovieDescription] = useState("excited movie !");
+  const [errors, setErrors] = useState(false);
 
   const navigate = useNavigate();
   const param = useParams();
 
   useEffect(() => {
-    getAllGenre();
-    if (param.id) {
-      getMovieById(param.id);
-    }
+    // getAllGenre();
+    // if (param.id) {
+    //   getMovieById(param.id);
+    // }
   }, []);
 
-  const getMovieById = async (id) => {
-    const response = await axios(MOVIE_API_URL + "/movieById", {
-      method: "POST",
-      data: { id },
-    });
-    const { rating, genre, movieName, _id, imageName } = response?.data;
-    setRating(rating);
-    setCheckedGenre(genre);
-    setMovieName(movieName);
-    setMovieId(_id);
-    //setImg(URL.createObjectURL(`http://localhost:3456/images/${imageName}`));
-    setSelecedImageUrl(imageName);
-  };
+  // const getMovieById = async (id) => {
+  //   const response = await axios(MOVIE_API_URL + "/movieById", {
+  //     method: "POST",
+  //     data: { id },
+  //   });
+  //   const { rating, genre, movieName, _id, imageName } = response?.data;
+  //   setRating(rating);
+  //   setCheckedGenre(genre);
+  //   setMovieName(movieName);
+  //   setMovieId(_id);
+  //   //setImg(URL.createObjectURL(`http://localhost:3456/images/${imageName}`));
+  //   setSelecedImageUrl(imageName);
+  // };
+  // const getAllGenre = async () => {
+  //   const data = await axios(GENRE_API_URL);
+  //   setGenreList(data?.data);
+  // };
 
-  const handleRatingChange = (e) => {
-    setRating(e.target.value);
-  };
+  // const handleCheckbox = (event) => {
+  //   const id = event.target.id;
+  //   if (!checkedGenre.includes(id) && event.target.checked) {
+  //     setCheckedGenre([...checkedGenre, id]);
+  //   } else {
+  //     const newList = checkedGenre.filter((item) => item != id);
+  //     setCheckedGenre(newList);
+  //   }
+  // };
+  const uploadSuccess = () => {
+    return (
+      <div class="flex items-center">
+        <div>
+          <span>Upload Success !</span>
+        </div>
+      </div>
+    )
+  }
 
-  const getAllGenre = async () => {
-    const data = await axios(GENRE_API_URL);
-    setGenreList(data?.data);
-  };
-
-  const handleCheckbox = (event) => {
-    const id = event.target.id;
-    if (!checkedGenre.includes(id) && event.target.checked) {
-      setCheckedGenre([...checkedGenre, id]);
-    } else {
-      const newList = checkedGenre.filter((item) => item != id);
-      setCheckedGenre(newList);
-    }
-  };
 
   const handleImage = (event) => {
     const img = event.target.files[0];
@@ -74,44 +79,67 @@ const AddMovie = () => {
   const handleVideo = (event) => {
     const video = event.target.files[0];
     setVideo(video);
-    console.log(video);
+  }
+  const handleAddMovie = async () => {
+    alert("Uploading, Please wait for a while")
+    var data = new FormData();
+    data.append("movieTitle", movieTitle);
+    data.append("movieCurrentEp", movieCurrentEp);
+    data.append("movieTotalEp", movieTotalEp);
+    data.append("movieDescription", movieDescription);
+    data.append("movieYear", movieYear);
+    data.append("movieRating", movieRating);
+    data.append("movieM3U8", "");
+    data.append("genre", genre);
+    data.append("filemp4", videoSource);
+    data.append("fileJpg", image);
+
+    var resp = await axios({
+      method: 'post',
+      url: MOVIE_UPLOAD_API_URL,
+      data: data,
+    })
+    if (resp.status == 201) {
+      alert("Upload finished")
+    }
+
   }
 
-  const handleAddMovie = async () => {
-    debugger;
-    let movieImgUrl = movieId == 0 ? "" : selectImageUrl;
-    if (movieId == 0) {
-      var data = new FormData();
-      data.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
-      data.append("file", img);
-      data.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
+  // const handleAddMovie = async () => {
+  //   debugger;
+  //   let movieImgUrl = movieId == 0 ? "" : selectImageUrl;
+  //   if (movieId == 0) {
+  //     var data = new FormData();
+  //     data.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
+  //     data.append("file", img);
+  //     data.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
 
-      const config = {
-        method: "POST",
-        body: data,
-      };
-      const response = await fetch(CLOUDINARY_IMAGE_UPLOAD_URL, config);
-      const responseData = await response.json();
-      movieImgUrl = responseData.url;
-      setSelecedImageUrl(responseData.url);
-    }
+  //     const config = {
+  //       method: "POST",
+  //       body: data,
+  //     };
+  //     const response = await fetch(CLOUDINARY_IMAGE_UPLOAD_URL, config);
+  //     const responseData = await response.json();
+  //     movieImgUrl = responseData.url;
+  //     setSelecedImageUrl(responseData.url);
+  //   }
 
-    if (movieImgUrl != "") {
-      const response = await axios(MOVIE_API_URL, {
-        method: "POST",
-        data: {
-          image: movieImgUrl,
-          movieName,
-          id: movieId,
-          rating,
-          genre: checkedGenre,
-        },
-      });
-      if ((response.status = 200)) {
-        navigate("/");
-      }
-    }
-  };
+  //   if (movieImgUrl != "") {
+  //     const response = await axios(MOVIE_API_URL, {
+  //       method: "POST",
+  //       data: {
+  //         image: movieImgUrl,
+  //         movieName,
+  //         id: movieId,
+  //         rating,
+  //         genre: checkedGenre,
+  //       },
+  //     });
+  //     if ((response.status = 200)) {
+  //       navigate("/");
+  //     }
+  //   }
+  // };
 
   return (
     <div className="w-full flex justify-center">
@@ -133,13 +161,11 @@ const AddMovie = () => {
             <div className="h-1/6 w-1/6 ">
               <img className="rounded-sm" src={selectImageUrl} alt="" />
             </div>
+            {errors ? <span style={{ color: "red" }}>Please Enter some value</span> : ''}
           </div>
         </div>
 
-
         {/* add movie source */}
-
-
         <div className="w-full">
           <label className="label">
             <span className="label-text">Movie Source</span>
@@ -151,48 +177,125 @@ const AddMovie = () => {
               onChange={handleVideo}
               className="file-input file-input-bordered file-input-primary w-full"
             />
+            {errors ? <span style={{ color: "red" }}>Please Enter some value</span> : ''}
           </div>
         </div>
 
-        {/* add movie title */}
 
         <div className="w-full">
+
+
+          {/* add movie title */}
+
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Title</span>
             </label>
             <input
               type="text"
-              value={movieName}
-              onChange={(e) => setMovieName(e.target.value)}
+              value={movieTitle}
+              onChange={(e) => setMovieTitle(e.target.value)}
               placeholder="Type here"
               className="input input-bordered w-full"
             />
-
-
+            {errors ? <span style={{ color: "red" }}>Please Enter some value</span> : ''}
           </div>
+
+
+
+          {/* add movie description */}
+
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Description</span>
+            </label>
+            <input
+              type="text"
+              value={movieDescription}
+              onChange={(e) => setMovieDescription(e.target.value)}
+              placeholder="Type here"
+              className="input input-bordered w-full"
+              required />
+          </div>
+
+
+
+
+
+          {/* add movie rating */}
           <div className="my-3">
             <label className="label">
               <span className="label-text">Rating</span>
             </label>
             <input
-              type="range"
-              min={0}
-              max="100"
-              value={rating}
-              className="range"
-              step="25"
-              onChange={handleRatingChange}
+              type="text"
+              value={movieRating}
+              onChange={(e) => setMovieRating(e.target.value)}
+              placeholder="Type here"
+              className="input input-bordered w-full"
             />
-            <div className="w-full flex justify-between text-xs px-2">
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-              <span>4</span>
-              <span>5</span>
-            </div>
           </div>
-          <div className="my-3 flex justify-between flex-wrap">
+          {/* add movie year */}
+
+          <div className="my-3">
+            <label className="label">
+              <span className="label-text">Year</span>
+            </label>
+            <input
+              type="text"
+              value={movieYear}
+              onChange={(e) => setMovieYear(e.target.value)}
+              placeholder="Type here"
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          {/* add movie total ep */}
+          <div className="my-3">
+            <label className="label">
+              <span className="label-text">Total Episodes</span>
+            </label>
+            <input
+              type="number"
+              value={movieTotalEp}
+              onChange={(e) => setMovieTotalEp(e.target.value)}
+              min="1" max="1000"
+              placeholder="Type here"
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          {/* add movie current ep */}
+          <div className="my-3">
+            <label className="label">
+              <span className="label-text">Current Episodes</span>
+            </label>
+            <input
+              type="number"
+              value={movieCurrentEp}
+              onChange={(e) => setMovieTCurrentEp(e.target.value)}
+              min="1" max="1000"
+              placeholder="Type here"
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          {/* add movie genre */}
+          <div className="my-3">
+            <label className="label">
+              <span className="label-text">Genre</span>
+            </label>
+            <input
+              type="text"
+              value={genre}
+              onChange={(e) => setMovieGenre(e.target.value)}
+              placeholder="Type here"
+              className="input input-bordered w-full"
+            />
+          </div>
+
+
+          {/* <div className="my-3 flex justify-between flex-wrap">
             {genreList.map((item) => (
               <div key={item.key} className="form-control ">
                 <label className="label cursor-pointer space-x-2">
@@ -208,7 +311,7 @@ const AddMovie = () => {
                 </label>
               </div>
             ))}
-          </div>
+          </div> */}
           <div>
             <button
               className="btn btn-block bg-primary"

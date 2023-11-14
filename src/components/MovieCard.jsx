@@ -43,9 +43,10 @@ const MovieCard = ({ data, setmovielist, movielist }) => {
           </p>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <div className="badge badge-outline text-xs" >
-            {genre}
-          </div>
+          <p className="text-xs text-slate-500">
+           Genre: {genre} <br></br>
+           ID: {id}
+          </p>
         </div>
         {/* <div className="rating rating-sm">
           <MovieStars movieName={movieName} rating={rating} id={_id} />

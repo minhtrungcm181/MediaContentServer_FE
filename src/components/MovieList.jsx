@@ -73,7 +73,7 @@ const MovieList = () => {
 
 
   return (
-    <div className="flex gap-2 flex-wrap justify-left">
+    <div className="flex gap-2 flex-wrap justify-center">
       {movieList?.map((item) => (
         <MovieCard key={item.id} data={item} movielist={movieList} setmovielist={setMovieList} />
       ))}

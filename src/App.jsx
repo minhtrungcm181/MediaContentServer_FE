@@ -27,10 +27,10 @@ function App() {
           path: "/movie/:id",
           element: <AddMovie />,
         },
-        {
-          path: "/genre",
-          element: <AddGenre />,
-        },
+        // {
+        //   path: "/genre",
+        //   element: <AddGenre />,
+        // },
       ],
     },
   ]);
