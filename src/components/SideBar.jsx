@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { RiDashboardLine } from "react-icons/ri";
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
 import { BsListCheck } from "react-icons/bs";
+import { MdOutlineImportantDevices } from "react-icons/md"
 
 const SideBar = () => {
   return (
@@ -24,6 +25,12 @@ const SideBar = () => {
             Genre
           </li>
         </Link> */}
+        <Link to="device">
+          <li className="px-8 py-4 hover:bg-violet-600 flex items-center gap-3">
+            <MdOutlineImportantDevices className="h-7 w-7" />
+            Device Manager
+          </li>
+        </Link>
       </ul>
     </div>
   );

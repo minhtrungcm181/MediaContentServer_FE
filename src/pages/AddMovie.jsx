@@ -21,7 +21,10 @@ const AddMovie = () => {
   const [selectImageUrl, setSelecedImageUrl] = useState("");
   const [movieYear, setMovieYear] = useState("2023");
   const [movieDescription, setMovieDescription] = useState("excited movie !");
-  const [errors, setErrors] = useState(false);
+  const [errorImage, setErrorImg] = useState(false);
+  const [errorVideo, setErrorVideo] = useState(false);
+  const [errorTitle, setErrorTitle] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const navigate = useNavigate();
   const param = useParams();
@@ -75,34 +78,56 @@ const AddMovie = () => {
     const img = event.target.files[0];
     setImg(img);
     setSelecedImageUrl(URL.createObjectURL(img));
+    setErrorImg(false);
   };
   const handleVideo = (event) => {
     const video = event.target.files[0];
     setVideo(video);
+    setErrorVideo(false);
+  }
+  const handleMovieTitle = (event) => {
+    setMovieTitle(event.target.value);
+    setErrorTitle(false)
   }
   const handleAddMovie = async () => {
-    alert("Uploading, Please wait for a while")
-    var data = new FormData();
-    data.append("movieTitle", movieTitle);
-    data.append("movieCurrentEp", movieCurrentEp);
-    data.append("movieTotalEp", movieTotalEp);
-    data.append("movieDescription", movieDescription);
-    data.append("movieYear", movieYear);
-    data.append("movieRating", movieRating);
-    data.append("movieM3U8", "");
-    data.append("genre", genre);
-    data.append("filemp4", videoSource);
-    data.append("fileJpg", image);
 
-    var resp = await axios({
-      method: 'post',
-      url: MOVIE_UPLOAD_API_URL,
-      data: data,
-    })
-    if (resp.status == 201) {
-      alert("Upload finished")
+    if (image == null) {
+      setErrorImg(true);
+    }
+    if (videoSource == null) {
+      setErrorVideo(true);
+    }
+    if (movieTitle == "") {
+      setErrorTitle(true);
     }
 
+    else {
+
+      setUploading(true);
+
+      alert("Uploading, Please wait for a while")
+      var data = new FormData();
+      data.append("movieTitle", movieTitle);
+      data.append("movieCurrentEp", movieCurrentEp);
+      data.append("movieTotalEp", movieTotalEp);
+      data.append("movieDescription", movieDescription);
+      data.append("movieYear", movieYear);
+      data.append("movieRating", movieRating);
+      data.append("movieM3U8", "");
+      data.append("genre", genre);
+      data.append("filemp4", videoSource);
+      data.append("fileJpg", image);
+
+      var resp = await axios({
+        method: 'post',
+        url: MOVIE_UPLOAD_API_URL,
+        data: data,
+      })
+      if (resp.status == 201) {
+        setUploading(false)
+        alert("Upload finished")
+      }
+    }
   }
 
   // const handleAddMovie = async () => {
@@ -161,7 +186,7 @@ const AddMovie = () => {
             <div className="h-1/6 w-1/6 ">
               <img className="rounded-sm" src={selectImageUrl} alt="" />
             </div>
-            {errors ? <span style={{ color: "red" }}>Please Enter some value</span> : ''}
+            {errorImage ? <span style={{ color: "red" }}>Please Enter some value</span> : ''}
           </div>
         </div>
 
@@ -177,7 +202,7 @@ const AddMovie = () => {
               onChange={handleVideo}
               className="file-input file-input-bordered file-input-primary w-full"
             />
-            {errors ? <span style={{ color: "red" }}>Please Enter some value</span> : ''}
+            {errorVideo ? <span style={{ color: "red" }}>Please Enter some value</span> : ''}
           </div>
         </div>
 
@@ -194,11 +219,11 @@ const AddMovie = () => {
             <input
               type="text"
               value={movieTitle}
-              onChange={(e) => setMovieTitle(e.target.value)}
+              onChange={handleMovieTitle}
               placeholder="Type here"
               className="input input-bordered w-full"
             />
-            {errors ? <span style={{ color: "red" }}>Please Enter some value</span> : ''}
+            {errorTitle ? <span style={{ color: "red" }}>Please Enter some value</span> : ''}
           </div>
 
 
@@ -315,8 +340,11 @@ const AddMovie = () => {
           <div>
             <button
               className="btn btn-block bg-primary"
-              onClick={handleAddMovie}>
-              Submit
+              onClick={handleAddMovie}
+              disabled = {uploading}
+              >
+              {uploading ? 
+              <span style={{ color: "white" }}>Uploading, wait for a while...</span> : 'Upload'}
             </button>
           </div>
         </div>

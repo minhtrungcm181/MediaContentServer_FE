@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import AddMovie from "./pages/AddMovie";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AddGenre from "./pages/AddGenre";
+import DeviceManager from "./pages/DeviceManager";
 
 function App() {
   const appRouter = createBrowserRouter([
@@ -26,6 +27,10 @@ function App() {
         {
           path: "/movie/:id",
           element: <AddMovie />,
+        },
+        {
+          path: "/device",
+          element: <DeviceManager />,
         },
         // {
         //   path: "/genre",
