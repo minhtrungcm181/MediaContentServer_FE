@@ -3,7 +3,7 @@ import { BiTrashAlt } from "react-icons/bi";
 import MovieStars from "./MovieStars";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { MOVIE_API_URL } from "../constants/const";
+import { MOVIE_API_DELETE, MOVIE_API_URL } from "../constants/const";
 import ConfirmDialog from "./ConfirmDialog";
 
 // id: film.filmId,
@@ -21,9 +21,20 @@ const MovieCard = ({ data, setmovielist, movielist }) => {
   const { id, movieCurrentEp, genre, movieRating, movieDescription, movieLogo, movieTitle, movieTotalEp } = data;
 
   const handleMovieDelete = async (id) => {
-    const data = await axios(MOVIE_API_URL, { method: "DELETE", data: { id } });
-    const newmovielist = movielist.filter((item) => item._id != data.data._id);
-    setmovielist(newmovielist);
+    var formData = new FormData()
+
+    var resp = await axios(
+      {
+        method: 'post',
+        url: MOVIE_API_DELETE + '/' + id
+      }
+
+    )
+    if (resp.data == "200") {
+      console.log(resp.data)
+      window.location.reload(true)
+    }
+
   };
 
   return (
@@ -44,8 +55,8 @@ const MovieCard = ({ data, setmovielist, movielist }) => {
         </div>
         <div className="flex gap-2 flex-wrap">
           <p className="text-xs text-slate-500">
-           Genre: {genre} <br></br>
-           ID: {id}
+            Genre: {genre} <br></br>
+            ID: {id}
           </p>
         </div>
         {/* <div className="rating rating-sm">
