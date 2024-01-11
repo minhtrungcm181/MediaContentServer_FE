@@ -5,42 +5,50 @@ const options = {
     host: 'localhost',
     port: 1884,
     protocol: 'mqtt',
-    topic: ["topic1", "topic2", "topic3", "topic4"],
+    topic: ["topic1", "topic2", "topic3", "topic4","statusTopic2"],
     id: 'ADMIN'
 }
 const mqttConnect = mqtt.connect(options);
 const mqttSubcribe = mqttConnect.subscribe(options.topic);
-const mqttUpdate = mqttConnect.publish("topichello", "UPDATE");
+const mqttUpdate = mqttConnect.publish("statusTopic", "1");
+
 
 
 const DeviceManager = () => {
 
     mqttConnect
-    setInterval(mqttUpdate , 10000)
+    
+    setInterval(mqttUpdate , 100)
 
     
     const mqttSubcribe = mqttConnect.subscribe(options.topic);
 
-    mqttSubcribe.on('message', function (topic, message) {
-        if (topic.toString() == 'topic1') {
-            if (message.toString() == "0") { setButton1(false) }
-            else { setButton1(true) }
-        }
-        else if (topic.toString() == 'topic2') {
-            if (message.toString() == "0") { setButton2(false) }
-            else { setButton2(true) }
-        }
-        else if (topic.toString() == 'topic3') {
-            if (message.toString() == "0") { setButton3(false) }
-            else { setButton3(true) }
-        }
-        else if (topic.toString() == 'topic4') {
-            if (message.toString() == "0") { setButton4(false) }
-            else { setButton4(true) }
-        }
+    // mqttSubcribe.on('message', function (topic, message) {
+    //     if(topic.toString("statusTopic2")){
+    //         let bin = message.toString()
+    //         let mes = bin.split('').map(bit => parseInt(bit))
+    //         for (let i = 0; i < mes.length; i++){
+    //             if(i == 0) {
+    //                 if(mes[i] == 0) {setButton1(false)}
+    //                 else if(mes[i] == 1) {setButton1(true)}
+    //             }
+    //             if(i == 1) {
+    //                 if(mes[i] == 0) {setButton2(false)}
+    //                 else if(mes[i] == 1) {setButton2(true)}
+    //             }
+    //             if(i == 2) {
+    //                 if(mes[i] == 0) {setButton3(false)}
+    //                 else if(mes[i] == 1) {setButton3(true)}
+    //             }
+    //             if(i == 3) {
+    //                 if(mes[i] == 0) {setButton4(false)}
+    //                 else if(mes[i] == 1) {setButton(true)}
+    //             }
+    //         }
+    //     }
 
-    }
-    )
+    // }
+    // )
 
 
     const [button1, setButton1] = useState(false);
