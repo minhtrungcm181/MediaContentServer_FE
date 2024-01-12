@@ -28,7 +28,7 @@ const SideBar = () => {
         <Link to="device">
           <li className="px-8 py-4 hover:bg-violet-600 flex items-center gap-3">
             <MdOutlineImportantDevices className="h-7 w-7" />
-            Device Manager
+            Room Manager
           </li>
         </Link>
       </ul>
