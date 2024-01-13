@@ -162,7 +162,7 @@ const DeviceManager = () => {
 
                 <div className="justify-left flex flex-col space-y-5 pt-0.2 pl-20">
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Check-in date: 14:22:42 12/1/2024</span>
-                    <div class="jutify-left pl-3 flex flex-row"><GiPowerLightning className="h-6 w-6"/><span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Total Power usage: </span></div>
+                    <div class="jutify-left pl-3 flex flex-row"><GiPowerLightning className="h-6 w-6"/><span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Total Power Usage: </span></div>
                     <button type="button" class="w-2/3 relative inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
                     <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
