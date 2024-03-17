@@ -9,7 +9,7 @@ const options = {
     host: 'localhost',
     port: 1884,
     protocol: 'mqtt',
-    topic: ["topic1", "topic2", "topic3", "topic4","statusTopic2"],
+    topic: ["topic1", "topic2", "topic3", "topic4","statusTopic2", "topicDevice"],
     id: 'ADMIN'
 }
 const mqttConnect = mqtt.connect(options);
@@ -54,12 +54,21 @@ const DeviceManager = () => {
 
     // }
     // )
+    mqttSubcribe.on('message', function(topic, message){
+        if(topic.toString() == "topicDevice"){
+            if(message.toString() == "FAN") {setDevice("Fan")}
+            if(message.toString() == "LAMP") {setDevice("Lamp")}
+            if(message.toString() == "NO LOAD") {setDevice("No device")}
+        }
+    })
+        
 
 
     const [button1, setButton1] = useState(false);
     const [button2, setButton2] = useState(false);
     const [button3, setButton3] = useState(false);
     const [button4, setButton4] = useState(false);
+    const [device, setDevice] = useState("No Device");
 
     const handleButton1 = () => {
         setButton1(!button1)
@@ -157,7 +166,7 @@ const DeviceManager = () => {
                         <span class="flex items-center ms-3 text-sm font-medium text-gray-900 dark:text-gray-300"><span class="flex w-2.5 h-2.5 bg-green-500 rounded-full me-1.5 flex-shrink-0"></span>Status: Online</span>
                         <div class="jutify-left pl-3 flex flex-row"><TbAirConditioning className="h-6 w-6"/><span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Temperature: 25°C  </span></div>
                         <div class="jutify-left pl-3 flex flex-row"><MdEmojiPeople className="h-6 w-6"/><span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">People Detected: Yes  </span></div>
-                        <div class="jutify-left pl-3 flex flex-row"><MdOutlineDeviceUnknown className="h-6 w-6"/><span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Electric Device: Light, Fan</span></div>
+                        <div class="jutify-left pl-3 flex flex-row"><MdOutlineDeviceUnknown className="h-6 w-6"/><span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Electric Device: {device}</span></div>
                 </div>
 
                 <div className="justify-left flex flex-col space-y-5 pt-0.2 pl-20">
@@ -184,8 +193,8 @@ const DeviceManager = () => {
                 <div class = "justify-center flex flex-col space-y-4">
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button1}
-                        onChange={handleButton1}
+                        // checked={button1}
+                        // onChange={handleButton1}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 1 </span>
@@ -195,8 +204,8 @@ const DeviceManager = () => {
 
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button2}
-                        onChange={handleButton2}
+                        // checked={button2}
+                        // onChange={handleButton2}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 2 </span>
@@ -206,8 +215,8 @@ const DeviceManager = () => {
 
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button3}
-                        onChange={handleButton3}
+                        // checked={button3}
+                        // onChange={handleButton3}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 3 </span>
@@ -217,8 +226,8 @@ const DeviceManager = () => {
 
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button4}
-                        onChange={handleButton4}
+                        // checked={button4}
+                        // onChange={handleButton4}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 4 </span>
@@ -256,8 +265,8 @@ const DeviceManager = () => {
                 <div class = "justify-center flex flex-col space-y-4">
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button1}
-                        onChange={handleButton1}
+                        // checked={button1}
+                        // onChange={handleButton1}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 1 </span>
@@ -267,8 +276,8 @@ const DeviceManager = () => {
 
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button2}
-                        onChange={handleButton2}
+                        // checked={button2}
+                        // onChange={handleButton2}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 2 </span>
@@ -278,8 +287,8 @@ const DeviceManager = () => {
 
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button3}
-                        onChange={handleButton3}
+                        // checked={button3}
+                        // onChange={handleButton3}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 3 </span>
@@ -289,8 +298,8 @@ const DeviceManager = () => {
 
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button4}
-                        onChange={handleButton4}
+                        // checked={button4}
+                        // onChange={handleButton4}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 4 </span>
@@ -328,8 +337,8 @@ const DeviceManager = () => {
                 <div class = "justify-center flex flex-col space-y-4">
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button1}
-                        onChange={handleButton1}
+                        // checked={button1}
+                        // onChange={handleButton1}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 1 </span>
@@ -339,8 +348,8 @@ const DeviceManager = () => {
 
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button2}
-                        onChange={handleButton2}
+                        // checked={button2}
+                        // onChange={handleButton2}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 2 </span>
@@ -350,8 +359,8 @@ const DeviceManager = () => {
 
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button3}
-                        onChange={handleButton3}
+                        // checked={button3}
+                        // onChange={handleButton3}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 3 </span>
@@ -361,8 +370,8 @@ const DeviceManager = () => {
 
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox"
-                        checked={button4}
-                        onChange={handleButton4}
+                        // checked={button4}
+                        // onChange={handleButton4}
                         class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Button 4 </span>

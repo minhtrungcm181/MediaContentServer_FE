@@ -51,7 +51,7 @@ const Header = () => {
         </Link>
         {/* </a> */}
       </div>
-      <div><span class="ms-3 text-large font-medium text-gray-900 dark:text-gray-300">{currentDate}, Hi Admin</span> </div>
+      <div><span class="ms-3 text-xl font-medium text-gray-900 dark:text-gray-300">{currentDate}, Hi Admin</span> </div>
       {/* <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
           <BsSearch className="h-5 w-5"/>
