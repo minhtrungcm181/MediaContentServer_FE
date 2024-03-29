@@ -9,8 +9,6 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AddMovie = () => {
-  const CLOUD_NAME = "dm4djc1b1";
-  const UPLOAD_PRESET = "eu6yplsi";
   const [image, setImg] = useState(null);
   const [videoSource, setVideo] = useState(null);
   const [movieRating, setMovieRating] = useState(5);
@@ -25,9 +23,6 @@ const AddMovie = () => {
   const [errorVideo, setErrorVideo] = useState(false);
   const [errorTitle, setErrorTitle] = useState(false);
   const [uploading, setUploading] = useState(false);
-
-  const navigate = useNavigate();
-  const param = useParams();
 
   useEffect(() => {
     // getAllGenre();
