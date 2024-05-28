@@ -2,7 +2,6 @@ import mqtt from "mqtt";
 import { useEffect, useState, useRef } from "react";
 import { TbAirConditioning } from "react-icons/tb";
 import { MdEmojiPeople } from "react-icons/md";
-import { MdOutlineDeviceUnknown } from "react-icons/md";
 import { FcAssistant } from "react-icons/fc";
 import { FaEye } from "react-icons/fa";
 import io from "socket.io-client";
@@ -33,7 +32,7 @@ const options = {
   host: "localhost",
   port: 1884,
   protocol: "mqtt",
-  topic: ["result"],
+  topic: ["topic6"],
   id: "ADMIN",
 };
 const mqttConnect = mqtt.connect(options);
@@ -117,32 +116,32 @@ const DeviceManager = () => {
   }, []);
   // setInterval(mqttUpdate , 100)
 
-  // mqttSubcribe.on('message', function (topic, message) {
-  //     if(topic.toString("statusTopic2")){
-  //         let bin = message.toString()
-  //         let mes = bin.split('').map(bit => parseInt(bit))
-  //         for (let i = 0; i < mes.length; i++){
-  //             if(i == 0) {
-  //                 if(mes[i] == 0) {setButton1(false)}
-  //                 else if(mes[i] == 1) {setButton1(true)}
-  //             }
-  //             if(i == 1) {
-  //                 if(mes[i] == 0) {setButton2(false)}
-  //                 else if(mes[i] == 1) {setButton2(true)}
-  //             }
-  //             if(i == 2) {
-  //                 if(mes[i] == 0) {setButton3(false)}
-  //                 else if(mes[i] == 1) {setButton3(true)}
-  //             }
-  //             if(i == 3) {
-  //                 if(mes[i] == 0) {setButton4(false)}
-  //                 else if(mes[i] == 1) {setButton(true)}
-  //             }
-  //         }
-  //     }
+  mqttConnect.on('message', function (topic, message) {
+      if(topic.toString("topic6")){
+          let bin = message.toString()
+          let mes = bin.split('').map(bit => parseInt(bit))
+          for (let i = 0; i < mes.length; i++){
+              if(i == 0) {
+                  if(mes[i] == 0) {setButton1(false)}
+                  else if(mes[i] == 1) {setButton1(true)}
+              }
+              if(i == 1) {
+                  if(mes[i] == 0) {setButton2(false)}
+                  else if(mes[i] == 1) {setButton2(true)}
+              }
+              if(i == 2) {
+                  if(mes[i] == 0) {setButton3(false)}
+                  else if(mes[i] == 1) {setButton3(true)}
+              }
+              if(i == 3) {
+                  if(mes[i] == 0) {setButton4(false)}
+                  else if(mes[i] == 1) {setButton(true)}
+              }
+          }
+      }
 
-  // }
-  // )
+  }
+  )
 
   const [button1, setButton1] = useState(false);
   const [button2, setButton2] = useState(false);
